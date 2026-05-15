@@ -17,34 +17,41 @@ export default function DesktopUI() {
     }, [])
 
     useEffect(() => {
-        const updateRows = () => {
+        const updateLayout = () => {
             if (desktopRef.current) {
+                const height = window.innerHeight - 40 - 80;
+
+                setDesktopHeight(height);
+
                 setRows(
-                    Math.floor(desktopRef.current.clientHeight / 90)
+                    Math.floor(height / (cellSize + gap))
                 );
             }
         };
 
-        updateRows();
+        updateLayout();
 
-        window.addEventListener("resize", updateRows);
+        window.addEventListener("resize", updateLayout);
 
-        return () => window.removeEventListener("resize", updateRows);
+        return () => window.removeEventListener("resize", updateLayout);
     }, []);
 
     const selectFolder = (id: number | null) => {
         setSelectedFolder(id);
     }
+    const [desktopHeight, setDesktopHeight] = useState(0);
+    const cellSize = 90;
+    const gap = 12;
     return (
         <div className="w-screen h-screen m-0 p-0 relative overflow-hidden">
             {/* Desktop Background */}
             <div className="flex absolute w-screen h-screen m-0 p-0 z-0">
-                <img src="/BG.png" alt="" className="w-full h-full object-cover" />
+                <img src="/BG2.png" alt="" className="w-full h-full object-cover" />
             </div>
 
             <div className="flex flex-col relative w-screen h-screen m-0 p-0">
                 {/* Toolbar */}
-                <div className="flex w-screen h-10 top-0 backdrop-blur-[50px] bg-black/60 place-content-between items-center px-4 justify-center gap-4">
+                <div className="flex w-screen h-10 top-0 backdrop-blur-[50px] bg-black/40 place-content-between items-center px-4 justify-center gap-4">
                     <div className="flex">May 20, 2026</div>
                     <div className="flex">10:36 AM</div>
                 </div>
@@ -54,9 +61,10 @@ export default function DesktopUI() {
                     onClick={() => selectFolder(null)}
                     ref={desktopRef}
                     style={{
-                        gridTemplateRows: `repeat(${rows}, 90px)`
+                        height: desktopHeight,
+                        gridTemplateRows: `repeat(${rows}, ${cellSize}px)`
                     }}
-                    className="grid grid-flow-col auto-cols-[90px] auto-rows-[90px] gap-3 p-4 flex-1 overflow-hidden"
+                    className="grid grid-flow-col auto-cols-[90px] auto-rows-[90px] gap-3 p-4 overflow-hidden"
                 >
 
                     {/* Files */}
@@ -64,7 +72,7 @@ export default function DesktopUI() {
                         return (
                             <div onClick={(e) => { e.stopPropagation(); selectFolder(folder.id); }} key={folder.id} className={`flex flex-col items-center justify-center hover:bg-gray-900/10 hover:border border-[#ffffff40] hover:backdrop-blur-lg rounded-lg px-3 ${selectedFolder === folder.id ? 'bg-gray-900/20 border border-[#ffffff40] backdrop-blur-lg' : ''} `}>
                                 {/* Icon */}
-                                <div className="flex w-17 h-17">
+                                <div className="flex w-15 h-auto">
                                     <img src={`${folder.empty ? '/Icons/FolderEmpty.png' : '/Icons/FolderWithFiles.png'}`} alt="" className="w-full h-full object-cover" />
                                 </div>
                                 {/* Name */}
@@ -77,7 +85,7 @@ export default function DesktopUI() {
                 </div>
 
                 {/* Taskbar */}
-                <div className="justify-self-center self-center flex w-130 h-15 mb-5 rounded-xl backdrop-blur-[30px] bg-black/30"></div>
+                <div className="self-center absolute bottom-5 w-130 h-18 mb-5 rounded-xl backdrop-blur-3xl bg-gray-500/10 border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)]"></div>
 
             </div>
         </div>
