@@ -77,3 +77,18 @@ async def desktop():
         {"id": "49", "name": "Wallpapers HD", "empty": False},
         {"id": "50", "name": "Important", "empty": False}
     ]
+    
+    
+@app.get("/api/taskbar/apps")
+async def taskbar():
+    return [
+        {"id": "1", "name": "File Manager", "icon": "/Icons/FileManager.png"},
+        {"id": "2", "name": "Web Browser", "icon": "/Icons/WebBrowser.png"},
+        {"id": "3", "name": "Code Editor", "icon": "/Icons/CodeEditor.png"},
+        {"id": "4", "name": "Terminal", "icon": "/Icons/Terminal.png"},
+        {"id": "5", "name": "Music Player", "icon": "/Icons/MusicPlayer.png"},
+        {"id": "6", "name": "Video Player", "icon": "/Icons/VideoPlayer.png"},
+        {"id": "7", "name": "Settings", "icon": "/Icons/Settings.png"},
+        {"id": "8", "name": "Email Client", "icon": "/Icons/EmailClient.png"},
+        {"id": "9", "name": "Calendar", "icon": "/Icons/Calendar.png"}
+    ]
